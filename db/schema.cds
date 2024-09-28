@@ -26,5 +26,5 @@ entity Authors {
     key ID          : UUID;
         name        : String(100);
         dateOfBirth : Date;
-        dateofDeath : Date;
+        dateOfDeath : Date;
 }

@@ -20,9 +20,8 @@ class CatalogService extends cds.ApplicationService {
         }
     }
 
-    reduceStock(req) {
-       /*  !!! This is only a preliminary, incomplete implementation of the submitOrder action !!!
-        !!! These will be used later to complete the implementaiton !!! */
+   async reduceStock(req) {
+      
         const { Books } = this.entities;
         const { book, quantity } = req.data;
 
@@ -30,9 +29,20 @@ class CatalogService extends cds.ApplicationService {
             return req.error("The quantity must be atleast 1");
         }
 
-        let stock = 10;
+        const b = await SELECT.one.from(Books).where({ID : book}).columns(b => {b.stock});
 
-        return { stock };
+        if(!b){
+            return req.error(`Book with ID ${book} does not exist`);
+        }
+
+        let { stock } = b;
+        if(quantity > stock) {
+            return `${quantity} exceeds stock ${stock} for book with ID ${book}`;
+        }
+
+        await UPDATE(Books).where({ID : book}).with({stock : {'-=' : quantity} });
+
+        return {stock : stock - quantity};
     }
 }
 

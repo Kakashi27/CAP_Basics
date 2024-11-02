@@ -16,11 +16,25 @@
   },
   "cds": {
     "requires": {
-      "db":{
+      "db": {
         "[development]": {
           "kind": "sqlite",
           "credentials": {
-            "url" : ":memory:"
+            "url": ":memory:"
+          }
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "adminuser": {
+            "password": "abcd1234",
+            "roles": [
+              "admin"
+            ]
+          },
+          "catuser": {
+            "password": "abcd1234"
           }
         }
       }
